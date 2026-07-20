@@ -1,0 +1,252 @@
+/* ============================================================
+   retailcloud Console — Design Tokens
+   Single source of truth for foundations: type, color, space,
+   radii, shadows, motion. Components must consume these vars,
+   not raw hex values.
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap");
+
+/* ---------- Brand font: Geist (variable weight) ------------------ */
+@font-face {
+  font-family: "Geist";
+  src: url("../fonts/Geist-VariableFont_wght.ttf") format("truetype-variations"),
+       url("../fonts/Geist-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist";
+  src: url("../fonts/Geist-Italic-VariableFont_wght.ttf") format("truetype-variations"),
+       url("../fonts/Geist-Italic-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- TYPE -------------------------------------------------- */
+  --font-family-primary: "Geist", "Helvetica Neue", Arial, sans-serif;
+  --font-family-mono: "Roboto Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* Base size is 12px — Console is a dense analytics surface.
+     Use semantic ramps (h1..body..meta) rather than raw sizes. */
+  --font-size-xs: 12px;     /* meta, micro labels */
+  --font-size-sm: 12.8px;   /* default tabular content */
+  --font-size-md: 14px;     /* section headings, primary buttons */
+  --font-size-lg: 16px;     /* page titles, key KPIs */
+  --font-size-xl: 20px;     /* hero KPI values */
+  --font-size-2xl: 28px;    /* numeric callouts, page hero numbers */
+
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  --line-height-tight: 1.2;
+  --line-height-base: 1.5;     /* 18/12 → matches spec lineHeight 18px */
+  --line-height-loose: 1.65;
+
+  --letter-spacing-tight: -0.01em;
+  --letter-spacing-wide: 0.04em;   /* uppercase eyebrows */
+
+  /* ---------- COLOR — primitive scale ------------------------------- */
+  /* Neutrals (named by lightness, Bootstrap-style; Console roots here) */
+  --rc-gray-900: #212529;
+  --rc-gray-800: #343a40;
+  --rc-gray-700: #495057;  /* primary text */
+  --rc-gray-600: #6c757d;  /* secondary text */
+  --rc-gray-500: #adb5bd;
+  --rc-gray-400: #ced4da;  /* input border */
+  --rc-gray-300: #dee2e6;  /* divider, raised surface edge */
+  --rc-gray-200: #e9ecef;  /* table row stripe */
+  --rc-gray-100: #f1f3f5;  /* page bg */
+  --rc-gray-050: #f8f9fa;  /* subtle row hover */
+  --rc-white:    #ffffff;
+  --rc-black:    #000000;
+
+  /* Brand */
+  --rc-blue-700: #0a2843;   /* deep navy — sidebar, borders, headings */
+  --rc-blue-600: #114b86;
+  --rc-blue-500: #1a6ab2;   /* primary brand — links, focus, primary action */
+  --rc-blue-400: #4789c5;
+  --rc-blue-100: #e3eef9;   /* selected row, info-soft bg */
+
+  /* Semantic accents — NOT supplied in the spec; harmonised with brand.
+     FLAG: confirm with brand team. */
+  --rc-green-600: #1f7a3a;
+  --rc-green-500: #2ea34d;
+  --rc-green-100: #e3f4e8;
+  --rc-amber-600: #b07406;
+  --rc-amber-500: #d68f0c;
+  --rc-amber-100: #fbeed0;
+  --rc-red-600:   #b1352b;
+  --rc-red-500:   #d04437;
+  --rc-red-100:   #fbe1de;
+
+  /* ---------- COLOR — semantic (consume these, not raw scale) ------- */
+  --color-text-primary:   var(--rc-gray-700);   /* #495057 (spec) */
+  --color-text-secondary: var(--rc-gray-600);
+  --color-text-tertiary:  var(--rc-blue-500);   /* #1a6ab2 (spec) — links */
+  --color-text-inverse:   #3a3a3a;              /* spec value — used on light chips */
+  --color-text-on-dark:   var(--rc-white);
+  --color-text-disabled:  var(--rc-gray-500);
+
+  --color-surface-page:    var(--rc-gray-100);  /* page bg */
+  --color-surface-muted:   var(--rc-white);     /* spec: #ffffff — cards, modals */
+  --color-surface-raised:  var(--rc-gray-300);  /* spec: #dee2e6 — toolbar fills */
+  --color-surface-strong:  #aaaaaa;             /* spec literal — heavy fills, sliders */
+  --color-surface-inverse: var(--rc-black);     /* spec: #000000 — top bar / dark chrome */
+
+  --color-border-default:  var(--rc-gray-300);
+  --color-border-strong:   var(--rc-gray-400);
+  --color-border-muted:    var(--rc-blue-700);  /* spec: #0a2843 — emphasis borders */
+  --color-border-focus:    var(--rc-blue-500);
+
+  --color-action-primary-bg:        var(--rc-blue-500);
+  --color-action-primary-bg-hover:  var(--rc-blue-600);
+  --color-action-primary-bg-active: var(--rc-blue-700);
+  --color-action-primary-fg:        var(--rc-white);
+
+  --color-action-secondary-bg:        var(--rc-white);
+  --color-action-secondary-bg-hover:  var(--rc-gray-050);
+  --color-action-secondary-bg-active: var(--rc-gray-200);
+  --color-action-secondary-border:    var(--rc-gray-400);
+  --color-action-secondary-fg:        var(--color-text-primary);
+
+  --color-status-success-fg: var(--rc-green-600);
+  --color-status-success-bg: var(--rc-green-100);
+  --color-status-warning-fg: var(--rc-amber-600);
+  --color-status-warning-bg: var(--rc-amber-100);
+  --color-status-danger-fg:  var(--rc-red-600);
+  --color-status-danger-bg:  var(--rc-red-100);
+  --color-status-info-fg:    var(--rc-blue-600);
+  --color-status-info-bg:    var(--rc-blue-100);
+
+  --color-link:        var(--rc-blue-500);
+  --color-link-hover:  var(--rc-blue-600);
+  --color-link-visited:var(--rc-blue-700);
+
+  --color-row-hover:    var(--rc-gray-050);
+  --color-row-selected: var(--rc-blue-100);
+
+  /* ---------- SPACING (spec scale, unmodified) --------------------- */
+  --space-1: 1.6px;
+  --space-2: 4px;
+  --space-3: 4.8px;
+  --space-4: 8px;
+  --space-5: 11.2px;
+  --space-6: 16px;
+  --space-7: 19px;
+  --space-8: 20px;
+  /* Extension above the spec range — needed for page-level layout.
+     Use sparingly; prefer 1–8 inside components. */
+  --space-9: 24px;
+  --space-10: 32px;
+  --space-12: 48px;
+
+  /* ---------- RADIUS ----------------------------------------------- */
+  --radius-xs: 3.2px;   /* chips, dense buttons */
+  --radius-sm: 4px;     /* inputs, default buttons */
+  --radius-md: 5px;     /* cards */
+  --radius-lg: 6px;     /* modals, popovers */
+  --radius-pill: 999px;
+
+  /* ---------- ELEVATION (flat — borders only) --------------------- */
+  /* Console is flat. Depth is communicated with borders and surface
+     color, not drop shadows. Shadow tokens are kept as `none` so any
+     component still referencing them resolves cleanly. The only real
+     box-shadow in the system is the focus ring. */
+  --shadow-1: none;
+  --shadow-2: none;
+  --shadow-overlay: none;
+  --shadow-focus-ring: 0 0 0 3px rgba(26, 106, 178, 0.35);
+
+  /* ---------- MOTION ----------------------------------------------- */
+  --motion-duration-instant: 150ms;
+  --motion-duration-fast:    200ms;
+  --motion-duration-base:    240ms;
+  --motion-easing-standard:  cubic-bezier(0.2, 0, 0.2, 1);
+  --motion-easing-emphasize: cubic-bezier(0.3, 0, 0, 1);
+
+  /* ---------- Z-INDEX --------------------------------------------- */
+  --z-sticky:   100;
+  --z-dropdown: 500;
+  --z-overlay:  900;
+  --z-modal:    1000;
+  --z-toast:    1100;
+}
+
+/* ============================================================
+   Semantic element styles — predictable defaults for any
+   HTML embedded inside Console surfaces.
+   ============================================================ */
+
+html, body {
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-xs);          /* 12px base per spec */
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-base);
+  color: var(--color-text-primary);
+  background: var(--color-surface-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-tight);
+  margin: 0;
+}
+h1 { font-size: var(--font-size-xl); letter-spacing: var(--letter-spacing-tight); }
+h2 { font-size: var(--font-size-lg); }
+h3 { font-size: var(--font-size-md); }
+h4 { font-size: var(--font-size-sm); font-weight: var(--font-weight-bold); }
+h5 { font-size: var(--font-size-xs); font-weight: var(--font-weight-bold); text-transform: uppercase; letter-spacing: var(--letter-spacing-wide); color: var(--color-text-secondary); }
+h6 { font-size: var(--font-size-xs); font-weight: var(--font-weight-medium); color: var(--color-text-secondary); }
+
+p  { margin: 0 0 var(--space-4); }
+small { font-size: var(--font-size-xs); color: var(--color-text-secondary); }
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+  transition: color var(--motion-duration-instant) var(--motion-easing-standard);
+}
+a:hover { color: var(--color-link-hover); text-decoration: underline; }
+a:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus-ring);
+  border-radius: var(--radius-xs);
+}
+
+code, kbd, samp {
+  font-family: var(--font-family-mono);
+  font-size: 0.95em;
+  background: var(--rc-gray-100);
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-xs);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-border-default);
+  margin: var(--space-6) 0;
+}
+
+/* Focus-visible default for any interactive element that doesn't
+   define its own. WCAG 2.2 AA — focus must always be visible. */
+:focus-visible {
+  outline: 2px solid var(--color-border-focus);
+  outline-offset: 2px;
+}
+
+/* Reduced motion override */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
