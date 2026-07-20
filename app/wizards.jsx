@@ -50,9 +50,12 @@ function campSeedJourney(obj) {
     trigger: obj.sub,
     enrolled: 0,
     steps: [
-      { day: "Step 1", type: "message", msg: obj.tmpl },
-      { day: "Step 2", type: "wait", waitN: 3, waitUnit: "days" },
-      { day: "Handoff", type: "human", human: true, msg: "Fan hasn't responded — flag for manual outreach." },
+      { day: "Step 1 · Message", type: "message", msg: obj.tmpl },
+      { day: "Step 2 · Wait", type: "wait", waitN: 3, waitUnit: "days",
+        branchYes: { action: "end" },
+        branchNo: { action: "continue" } },
+      { day: "Step 3 · Follow-up", type: "message", msg: "Last call — this offer expires soon. Don't miss out." },
+      { day: "Handoff", type: "human", human: true, msg: "Fan still hasn't responded after two nudges — flag for manual outreach." },
     ],
   };
 }

@@ -11,6 +11,46 @@ const FLOW_TYPE_META = {
 };
 function flowStepType(step) { return step.human ? "human" : (step.type || "message"); }
 
+const BRANCH_ACTIONS = [
+  { id: "end", label: "End journey" },
+  { id: "points", label: "Award points & end" },
+  { id: "continue", label: "Continue to next step" },
+  { id: "human", label: "Route to human queue" },
+  { id: "hold", label: "Hold — keep monitoring" },
+];
+const BRANCH_TEAMS = ["Ticket sales", "Guest services", "Retention team"];
+
+function describeBranchOutcome(o) {
+  if (!o) return "—";
+  switch (o.action) {
+    case "points": return `Award ${o.points || 0} points & end`;
+    case "human": return `Route to ${o.team || BRANCH_TEAMS[0]}`;
+    case "continue": return "Continue to next step";
+    case "hold": return "Hold — keep monitoring";
+    default: return "End journey";
+  }
+}
+
+function BranchOutcomeEditor({ outcome, onChange }) {
+  const o = outcome || { action: "end" };
+  return (
+    <div className="ns-flowoutcome">
+      <select className="ns-flowoutcome__select" value={o.action || "end"} onChange={(e) => onChange({ ...o, action: e.target.value })}>
+        {BRANCH_ACTIONS.map((a) => <option key={a.id} value={a.id}>{a.label}</option>)}
+      </select>
+      {o.action === "points" && (
+        <input className="ns-flowoutcome__num" type="number" min={0} step={50} value={o.points || 0}
+          onChange={(e) => onChange({ ...o, points: Math.max(0, Number(e.target.value) || 0) })} aria-label="Points" />
+      )}
+      {o.action === "human" && (
+        <select className="ns-flowoutcome__select" value={o.team || BRANCH_TEAMS[0]} onChange={(e) => onChange({ ...o, team: e.target.value })}>
+          {BRANCH_TEAMS.map((t) => <option key={t} value={t}>{t}</option>)}
+        </select>
+      )}
+    </div>
+  );
+}
+
 function FlowFork() {
   return (
     <svg className="ns-flowfork" viewBox="0 0 100 36" preserveAspectRatio="none" aria-hidden="true">
@@ -28,14 +68,14 @@ function FlowBranch({ step, editable, onUpdate }) {
         <div className="ns-flowleaf ns-flowleaf--yes">
           <span className="ns-flowleaf__tag"><Icon name="check" size={10} stroke={3} />Yes</span>
           {editable
-            ? <input className="ns-flowleaf__input" value={step.branchYes || ""} placeholder="Outcome if yes…" onChange={(e) => onUpdate({ branchYes: e.target.value })} />
-            : <span className="ns-flowleaf__label">{step.branchYes}</span>}
+            ? <BranchOutcomeEditor outcome={step.branchYes} onChange={(v) => onUpdate({ branchYes: v })} />
+            : <span className="ns-flowleaf__label">{describeBranchOutcome(step.branchYes)}</span>}
         </div>
         <div className="ns-flowleaf ns-flowleaf--no">
           <span className="ns-flowleaf__tag"><Icon name="chevRight" size={10} />No</span>
           {editable
-            ? <input className="ns-flowleaf__input" value={step.branchNo || ""} placeholder="Outcome if no…" onChange={(e) => onUpdate({ branchNo: e.target.value })} />
-            : <span className="ns-flowleaf__label">{step.branchNo}</span>}
+            ? <BranchOutcomeEditor outcome={step.branchNo} onChange={(v) => onUpdate({ branchNo: v })} />
+            : <span className="ns-flowleaf__label">{describeBranchOutcome(step.branchNo)}</span>}
         </div>
       </div>
     </div>
@@ -86,7 +126,7 @@ function FlowNode({ step, index, editable, onUpdate, onDelete }) {
             ))}
           </div>
           {type !== "human" && (
-            <button className="ns-btn ns-btn--ghost ns-btn--sm" onClick={() => onUpdate(hasBranch ? { branchYes: "", branchNo: "" } : { branchYes: "Continue", branchNo: "Continue" })}>
+            <button className="ns-btn ns-btn--ghost ns-btn--sm" onClick={() => onUpdate(hasBranch ? { branchYes: null, branchNo: null } : { branchYes: { action: "end" }, branchNo: { action: "continue" } })}>
               <Icon name="filter" size={12} />{hasBranch ? "Remove branch" : "Add branch"}
             </button>
           )}

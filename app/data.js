@@ -357,26 +357,26 @@
   const SEQUENCES = [
     { id: "seq-lapsed", name: "Lapsed-fan re-engagement", status: "active", trigger: "No game-day F&B in last 3 home games", enrolled: 142, active: 38, converted: 61, handoff: 9,
       steps: [
-        { day: "Day 1 · Pre-Game 4", msg: "We haven't seen you lately. Your Gold benefits are waiting — 20% off all food tonight.", branchYes: "Bonus 300 points → end", branchNo: "Proceed to Day 2", conv: 34 },
-        { day: "Day 2 · Pre-Game 5", msg: "Miss you. Here's $10 off F&B if you come back for the next game.", branchYes: "Bonus 500 points → end", branchNo: "Flag to ticket sales → human outreach", conv: 27 },
+        { day: "Day 1 · Pre-Game 4", msg: "We haven't seen you lately. Your Gold benefits are waiting — 20% off all food tonight.", branchYes: { action: "points", points: 300 }, branchNo: { action: "continue" }, conv: 34 },
+        { day: "Day 2 · Pre-Game 5", msg: "Miss you. Here's $10 off F&B if you come back for the next game.", branchYes: { action: "points", points: 500 }, branchNo: { action: "human", team: "Ticket sales" }, conv: 27 },
         { day: "Handoff", msg: "Fan has missed 5 consecutive games. At-risk for non-renewal.", branchYes: null, branchNo: null, conv: 9, human: true },
       ] },
     { id: "seq-onboard", name: "New-fan onboarding", status: "active", trigger: "First recognized game-day purchase", enrolled: 308, active: 121, converted: 164, handoff: 0,
       steps: [
-        { day: "Game 1", msg: "Welcome — your loyalty is tracked automatically every time you tap.", branchYes: "Continue", branchNo: "Continue", conv: 0 },
-        { day: "Game 2", msg: "You've earned 240 points. Here's how to redeem at any stand.", branchYes: "Continue", branchNo: "Continue", conv: 0 },
-        { day: "Game 3", msg: "You're a regular now — here's a bonus 500 points to keep going.", branchYes: "End", branchNo: "End", conv: 164 },
+        { day: "Game 1", msg: "Welcome — your loyalty is tracked automatically every time you tap.", branchYes: { action: "continue" }, branchNo: { action: "continue" }, conv: 0 },
+        { day: "Game 2", msg: "You've earned 240 points. Here's how to redeem at any stand.", branchYes: { action: "continue" }, branchNo: { action: "continue" }, conv: 0 },
+        { day: "Game 3", msg: "You're a regular now — here's a bonus 500 points to keep going.", branchYes: { action: "points", points: 500 }, branchNo: { action: "end" }, conv: 164 },
       ] },
     { id: "seq-tier", name: "Tier-upgrade journey", status: "draft", trigger: "Silver · within $50 of Gold", enrolled: 0, active: 0, converted: 0, handoff: 0,
       steps: [
-        { day: "Step 1", msg: "You're $50 of spend from Gold. Here's what unlocks.", branchYes: "End — upgraded", branchNo: "Step 2", conv: 0 },
-        { day: "Step 2", msg: "Halfway there — spend $25 tonight and you're Gold.", branchYes: "End — upgraded", branchNo: "Hold", conv: 0 },
+        { day: "Step 1", msg: "You're $50 of spend from Gold. Here's what unlocks.", branchYes: { action: "end" }, branchNo: { action: "continue" }, conv: 0 },
+        { day: "Step 2", msg: "Halfway there — spend $25 tonight and you're Gold.", branchYes: { action: "end" }, branchNo: { action: "hold" }, conv: 0 },
       ] },
     { id: "seq-renewal", name: "Pre-renewal nurture", status: "scheduled", trigger: "90 days before renewal window · healthy signals", enrolled: 0, active: 0, converted: 0, handoff: 0,
       steps: [
-        { day: "Day 90", msg: "Your season's been strong — 11 benefit uses so far. Renewal opens soon.", branchYes: "Continue", branchNo: "Continue", conv: 0 },
-        { day: "Day 45", msg: "Lock in your seats — early renewal earns 2× points on the renewal.", branchYes: "End — renewed", branchNo: "Day 14", conv: 0 },
-        { day: "Day 14", msg: "Last chance for the early-renewal bonus. Here's your usage recap.", branchYes: "End — renewed", branchNo: "Hand to ticket sales", conv: 0, human: true },
+        { day: "Day 90", msg: "Your season's been strong — 11 benefit uses so far. Renewal opens soon.", branchYes: { action: "continue" }, branchNo: { action: "continue" }, conv: 0 },
+        { day: "Day 45", msg: "Lock in your seats — early renewal earns 2× points on the renewal.", branchYes: { action: "end" }, branchNo: { action: "continue" }, conv: 0 },
+        { day: "Day 14", msg: "Last chance for the early-renewal bonus. Here's your usage recap.", branchYes: { action: "end" }, branchNo: { action: "human", team: "Ticket sales" }, conv: 0, human: true },
       ] },
   ];
 

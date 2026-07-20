@@ -696,8 +696,9 @@
 .ns-flowleaf--yes .ns-flowleaf__tag { color: var(--rc-green-700); }
 .ns-flowleaf--no .ns-flowleaf__tag { color: var(--color-text-secondary); }
 .ns-flowleaf__label { font: 400 11.5px/1.4 var(--font-family-primary); color: var(--rc-gray-900); }
-.ns-flowleaf__input { border: 0; background: transparent; outline: none; font: 400 11.5px/1.4 var(--font-family-primary); color: var(--rc-gray-900); border-bottom: 1.5px solid transparent; padding-bottom: 1px; }
-.ns-flowleaf__input:focus { border-bottom-color: var(--ns-accent); }
+.ns-flowoutcome { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.ns-flowoutcome__select { height: 24px; padding: 0 5px; font: 500 10.5px/1 var(--font-family-primary); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); background: var(--rc-white); color: var(--rc-gray-900); max-width: 100%; }
+.ns-flowoutcome__num { width: 52px; height: 24px; padding: 0 6px; font: 500 11px/1 var(--font-family-mono); border: 1px solid var(--color-border-default); border-radius: var(--radius-xs); }
 
 .ns-flowadd { align-self: center; display: inline-flex; align-items: center; gap: 6px; border: 1.5px dashed var(--color-border-strong); background: var(--rc-white); color: var(--color-text-secondary); border-radius: var(--radius-pill); padding: 8px 16px; font: 500 12px/1 var(--font-family-primary); cursor: pointer; transition: border-color var(--motion-duration-instant), color var(--motion-duration-instant); }
 .ns-flowadd:hover { border-color: var(--ns-accent); color: var(--ns-accent); }

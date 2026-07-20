@@ -4,8 +4,8 @@
     {
       "name": "northstar-crm",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8442"],
-      "port": 8442
+      "runtimeArgs": ["-m", "http.server", "8453"],
+      "port": 8453
     }
   ]
 }
