@@ -255,4 +255,23 @@ function SliderField({ min, max, step, value, onChange, prefix, suffix, width })
   );
 }
 
-Object.assign(window, { Icon, Delta, Kpi, Tier, Badge, Avatar, Progress, Sparkline, BarChart, Donut, SentLine, SentTag, PageHead, SliderField });
+// ---------- Field card (icon-badge labeled section) ----------
+// A single business-decision field: colored icon badge + label + optional
+// description, with the actual control (slider/seg/toggle/etc) below.
+// Gives each field its own visual anchor instead of a flat stack of rows.
+function FieldCard({ icon, color, bg, label, sub, children }) {
+  return (
+    <div className="ns-fieldcard">
+      <div className="ns-fieldcard__head">
+        <span className="ns-fieldcard__ico" style={{ background: bg, color: color }}><Icon name={icon} size={15} /></span>
+        <div className="ns-fieldcard__meta">
+          <div className="ns-fieldcard__label">{label}</div>
+          {sub && <div className="ns-fieldcard__sub">{sub}</div>}
+        </div>
+      </div>
+      <div className="ns-fieldcard__body">{children}</div>
+    </div>
+  );
+}
+
+Object.assign(window, { Icon, Delta, Kpi, Tier, Badge, Avatar, Progress, Sparkline, BarChart, Donut, SentLine, SentTag, PageHead, SliderField, FieldCard });

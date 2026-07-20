@@ -186,20 +186,11 @@ function LPQuestion({ qid, val, onChange }) {
   if (!q) return null;
   const meta = LP_Q_META[qid] || { icon: "sliders", color: "var(--ns-accent)", bg: "var(--rc-blue-100)" };
   return (
-    <div className="ns-lpq">
-      <div className="ns-lpq__head">
-        <span className="ns-lpq__ico" style={{ background: meta.bg, color: meta.color }}><Icon name={meta.icon} size={15} /></span>
-        <div className="ns-lpq__meta">
-          <div className="ns-lpq__label">{q.label}</div>
-          {q.sub && <div className="ns-lpq__sub">{q.sub}</div>}
-        </div>
-      </div>
-      <div className="ns-lpq__body">
-        {q.kind === "slider" && <SliderField min={q.min} max={q.max} step={q.step} value={val} onChange={onChange} prefix={q.prefix} suffix={q.suffix} width={q.width} />}
-        {q.kind === "seg" && <div className="ns-seg" style={{ flexWrap:"wrap", height:"auto" }}>{q.options.map(([id,l])=><button key={id} className={val===id?"is-active":""} onClick={()=>onChange(id)}>{l}</button>)}</div>}
-        {q.kind === "toggle" && <div className="ns-seg">{[["Yes",true],["No",false]].map(([l,v])=><button key={l} className={val===v?"is-active":""} onClick={()=>onChange(v)}>{l}</button>)}</div>}
-      </div>
-    </div>
+    <FieldCard icon={meta.icon} color={meta.color} bg={meta.bg} label={q.label} sub={q.sub}>
+      {q.kind === "slider" && <SliderField min={q.min} max={q.max} step={q.step} value={val} onChange={onChange} prefix={q.prefix} suffix={q.suffix} width={q.width} />}
+      {q.kind === "seg" && <div className="ns-seg" style={{ flexWrap:"wrap", height:"auto" }}>{q.options.map(([id,l])=><button key={id} className={val===id?"is-active":""} onClick={()=>onChange(id)}>{l}</button>)}</div>}
+      {q.kind === "toggle" && <div className="ns-seg">{[["Yes",true],["No",false]].map(([l,v])=><button key={l} className={val===v?"is-active":""} onClick={()=>onChange(v)}>{l}</button>)}</div>}
+    </FieldCard>
   );
 }
 

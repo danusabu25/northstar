@@ -125,19 +125,19 @@ function PromotionBuilder({ onClose, seedAudience }) {
               open={openId === "offer"} onToggle={() => toggle("offer")}>
               <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: 0 }}>
                 <div style={{ paddingRight: 22 }}>
-                  <div className="ns-seg" style={{ marginBottom: 16, flexWrap: "wrap", height: "auto" }}>{[["pct", "% off"], ["amt", "$ off"], ["free", "Free item"], ["points", "Bonus pts"], ["bogo", "BOGO"]].map(([id, l]) => <button key={id} className={discType === id ? "is-active" : ""} onClick={() => setDiscType(id)}>{l}</button>)}</div>
-                  {(discType === "pct" || discType === "amt" || discType === "points") && (
-                    <div className="ns-cond" style={{ marginBottom: 16 }}>
-                      <div className="ns-cond__body"><div className="ns-cond__label">{discType === "pct" ? "Percent off" : discType === "amt" ? "Amount off" : "Bonus points"}</div>
-                        <SliderField min={discType === "pct" ? 5 : discType === "points" ? 100 : 1} max={discType === "pct" ? 50 : discType === "points" ? 2000 : 25} step={discType === "pct" ? 5 : discType === "points" ? 100 : 1} value={discVal} onChange={setDiscVal}
-                          prefix={discType === "amt" ? "$" : null} suffix={discType === "pct" ? "%" : discType === "points" ? " pts" : null} width={discType === "points" ? 72 : 56} />
-                      </div>
-                    </div>
-                  )}
-                  <div className="ns-sectlabel">Applies to</div>
-                  <div className="ns-seg" style={{ marginBottom: 16, flexWrap: "wrap", height: "auto" }}>{[["beer", "Draft beer"], ["food", "Food"], ["all", "All F&B"], ["merch", "Merch"]].map(([id, l]) => <button key={id} className={applyTo === id ? "is-active" : ""} onClick={() => setApplyTo(id)}>{l}</button>)}</div>
-                  <div className="ns-sectlabel">Applies at</div>
-                  <div className="ns-seg" style={{ flexWrap: "wrap", height: "auto" }}>{[["all", "All terminals"], ["110-120", "Sec 110–120"], ["club", "Club level"], ["stand12", "Stand 12"]].map(([id, l]) => <button key={id} className={applyAt === id ? "is-active" : ""} onClick={() => setApplyAt(id)}>{l}</button>)}</div>
+                  <FieldCard icon="dollar" color="#15803d" bg="#e7f6ec" label="Discount">
+                    <div className="ns-seg" style={{ marginBottom: (discType === "pct" || discType === "amt" || discType === "points") ? 14 : 0, flexWrap: "wrap", height: "auto" }}>{[["pct", "% off"], ["amt", "$ off"], ["free", "Free item"], ["points", "Bonus pts"], ["bogo", "BOGO"]].map(([id, l]) => <button key={id} className={discType === id ? "is-active" : ""} onClick={() => setDiscType(id)}>{l}</button>)}</div>
+                    {(discType === "pct" || discType === "amt" || discType === "points") && (
+                      <SliderField min={discType === "pct" ? 5 : discType === "points" ? 100 : 1} max={discType === "pct" ? 50 : discType === "points" ? 2000 : 25} step={discType === "pct" ? 5 : discType === "points" ? 100 : 1} value={discVal} onChange={setDiscVal}
+                        prefix={discType === "amt" ? "$" : null} suffix={discType === "pct" ? "%" : discType === "points" ? " pts" : null} width={discType === "points" ? 72 : 56} />
+                    )}
+                  </FieldCard>
+                  <FieldCard icon="cart" color="#c2660a" bg="#fcefdf" label="Applies to">
+                    <div className="ns-seg" style={{ flexWrap: "wrap", height: "auto" }}>{[["beer", "Draft beer"], ["food", "Food"], ["all", "All F&B"], ["merch", "Merch"]].map(([id, l]) => <button key={id} className={applyTo === id ? "is-active" : ""} onClick={() => setApplyTo(id)}>{l}</button>)}</div>
+                  </FieldCard>
+                  <FieldCard icon="pin" color="#be185d" bg="#fceaf1" label="Applies at">
+                    <div className="ns-seg" style={{ flexWrap: "wrap", height: "auto" }}>{[["all", "All terminals"], ["110-120", "Sec 110–120"], ["club", "Club level"], ["stand12", "Stand 12"]].map(([id, l]) => <button key={id} className={applyAt === id ? "is-active" : ""} onClick={() => setApplyAt(id)}>{l}</button>)}</div>
+                  </FieldCard>
                 </div>
                 <div style={{ paddingLeft: 22, borderLeft: "1px solid var(--color-border-default)" }}>
                   <div className="ns-sectlabel">Terminal preview</div>
@@ -171,16 +171,19 @@ function PromotionBuilder({ onClose, seedAudience }) {
             <RBSection id="limits" n="5" title="Limits" desc="Validity window, redemption caps, and conflict handling"
               summary={capLabel} done
               open={openId === "limits"} onToggle={() => toggle("limits")}>
-              <div className="ns-sectlabel">Validity window</div>
-              <div className="ns-seg" style={{ marginBottom: 16, flexWrap: "wrap", height: "auto" }}>{[["tonight", "Tonight · Game 14"], ["homestand", "This homestand"], ["trigger", "On trigger"], ["custom", "Custom dates"]].map(([id, l]) => <button key={id} className={validity === id ? "is-active" : ""} onClick={() => setValidity(id)}>{l}</button>)}</div>
-              <div className="ns-sectlabel">Per-fan redemption limit</div>
-              <div className="ns-seg" style={{ marginBottom: 16, flexWrap: "wrap", height: "auto" }}>{[["game", "1 / fan / game"], ["season", "Max 3 / season"], ["total", "1 / fan total"], ["none", "No cap"]].map(([id, l]) => <button key={id} className={freqCap === id ? "is-active" : ""} onClick={() => setFreqCap(id)}>{l}</button>)}</div>
+              <FieldCard icon="calendar" color="#0e7490" bg="#e2f4f8" label="Validity window">
+                <div className="ns-seg" style={{ flexWrap: "wrap", height: "auto" }}>{[["tonight", "Tonight · Game 14"], ["homestand", "This homestand"], ["trigger", "On trigger"], ["custom", "Custom dates"]].map(([id, l]) => <button key={id} className={validity === id ? "is-active" : ""} onClick={() => setValidity(id)}>{l}</button>)}</div>
+              </FieldCard>
+              <FieldCard icon="shield" color="#b91c1c" bg="#fbe9e8" label="Per-fan redemption limit">
+                <div className="ns-seg" style={{ flexWrap: "wrap", height: "auto" }}>{[["game", "1 / fan / game"], ["season", "Max 3 / season"], ["total", "1 / fan total"], ["none", "No cap"]].map(([id, l]) => <button key={id} className={freqCap === id ? "is-active" : ""} onClick={() => setFreqCap(id)}>{l}</button>)}</div>
+              </FieldCard>
               <RBToggle on={budgetOn} onClick={() => setBudgetOn((v) => !v)} label="Total budget cap" sub="Promotion pauses automatically when this discount value is reached" />
               {budgetOn && <div style={{ marginTop: 8, marginBottom: 12 }}><div className="ns-cond"><div className="ns-cond__body"><div className="ns-cond__label">Budget ceiling</div><SliderField min={500} max={10000} step={100} value={budgetVal} onChange={setBudgetVal} prefix="$" width={72} /></div></div></div>}
               <div style={{ marginTop: 10 }}><RBToggle on={invOn} onClick={() => setInvOn((v) => !v)} label="Inventory cap" sub="First N fans only — closes when reached regardless of budget" /></div>
               {invOn && <div style={{ marginTop: 8, marginBottom: 12 }}><div className="ns-cond"><div className="ns-cond__body"><div className="ns-cond__label">Redemption limit</div><SliderField min={50} max={2000} step={50} value={invVal} onChange={setInvVal} prefix="first" width={64} /></div></div></div>}
-              <div className="ns-sectlabel" style={{ marginTop: 6 }}>Conflict with loyalty rules</div>
-              <div className="ns-seg" style={{ marginBottom: 14 }}>{[["stackable", "Stackable"], ["first", "First wins"], ["best", "Best value"]].map(([id, l]) => <button key={id} className={conflict === id ? "is-active" : ""} onClick={() => setConflict(id)}>{l}</button>)}</div>
+              <FieldCard icon="bolt" color="#7c3aed" bg="#f0eafd" label="Conflict with loyalty rules">
+                <div className="ns-seg">{[["stackable", "Stackable"], ["first", "First wins"], ["best", "Best value"]].map(([id, l]) => <button key={id} className={conflict === id ? "is-active" : ""} onClick={() => setConflict(id)}>{l}</button>)}</div>
+              </FieldCard>
               <RBToggle on={stack} onClick={() => setStack((v) => !v)} label="Stack with standing entitlements" sub="Allow on top of a member's permanent benefit" />
             </RBSection>
 

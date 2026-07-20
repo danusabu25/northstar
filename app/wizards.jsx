@@ -158,11 +158,13 @@ function CampaignBuilder({ onClose, seedAudience }) {
               </div>
               <div className="ns-sectlabel">Objective</div>
               <OptionCards options={CAMP_OBJECTIVES} value={s.obj} onChange={pickObj} cols={3} />
-              <div className="ns-sectlabel" style={{ marginTop: 18 }}>Channel</div>
-              <div className="ns-seg" style={{ marginBottom: 4 }}>
-                {CAMP_CHANNELS.map((c) => <button key={c.id} className={s.channel === c.id ? "is-active" : ""} onClick={() => u({ channel: c.id })}><Icon name={c.icon} size={12} />{c.label}</button>)}
+              <div style={{ marginTop: 18 }}>
+                <FieldCard icon={channelMeta.icon} color="#15803d" bg="#e7f6ec" label="Channel" sub={channelMeta.sub}>
+                  <div className="ns-seg">
+                    {CAMP_CHANNELS.map((c) => <button key={c.id} className={s.channel === c.id ? "is-active" : ""} onClick={() => u({ channel: c.id })}><Icon name={c.icon} size={12} />{c.label}</button>)}
+                  </div>
+                </FieldCard>
               </div>
-              <div className="ns-muted" style={{ fontSize: 10.5 }}>{channelMeta.sub}</div>
             </RBSection>
 
             <RBSection id="audience" n="2" title="Audience" desc="Who qualifies for this campaign"
@@ -240,27 +242,25 @@ function CampaignBuilder({ onClose, seedAudience }) {
                     })}
                   </div>
 
-                  <div className="ns-sectlabel">Offer</div>
-                  <div className="ns-seg" style={{ marginBottom: 16, flexWrap: "wrap", height: "auto" }}>{[["pct", "% off"], ["amt", "$ off"], ["free", "Free item"], ["points", "Bonus pts"]].map(([id, l]) => <button key={id} className={s.promo.discType === id ? "is-active" : ""} onClick={() => up({ discType: id })}>{l}</button>)}</div>
-                  {(s.promo.discType === "pct" || s.promo.discType === "amt" || s.promo.discType === "points") && (
-                    <div className="ns-cond" style={{ marginBottom: 16 }}>
-                      <div className="ns-cond__body"><div className="ns-cond__label">{s.promo.discType === "pct" ? "Percent off" : s.promo.discType === "amt" ? "Amount off" : "Bonus points"}</div>
-                        <SliderField min={s.promo.discType === "pct" ? 5 : s.promo.discType === "points" ? 100 : 1} max={s.promo.discType === "pct" ? 50 : s.promo.discType === "points" ? 2000 : 25} step={s.promo.discType === "pct" ? 5 : s.promo.discType === "points" ? 100 : 1} value={s.promo.discVal} onChange={(v) => up({ discVal: v })}
-                          prefix={s.promo.discType === "amt" ? "$" : null} suffix={s.promo.discType === "pct" ? "%" : s.promo.discType === "points" ? " pts" : null} width={s.promo.discType === "points" ? 72 : 56} />
-                      </div>
-                    </div>
-                  )}
-                  <div className="ns-sectlabel">Applies to</div>
-                  <div className="ns-seg" style={{ marginBottom: 18, flexWrap: "wrap", height: "auto" }}>{[["beer", "Draft beer"], ["food", "Food"], ["all", "All F&B"], ["merch", "Merch"]].map(([id, l]) => <button key={id} className={s.promo.applyTo === id ? "is-active" : ""} onClick={() => up({ applyTo: id })}>{l}</button>)}</div>
+                  <FieldCard icon="dollar" color="#15803d" bg="#e7f6ec" label="Offer">
+                    <div className="ns-seg" style={{ marginBottom: (s.promo.discType === "pct" || s.promo.discType === "amt" || s.promo.discType === "points") ? 14 : 0, flexWrap: "wrap", height: "auto" }}>{[["pct", "% off"], ["amt", "$ off"], ["free", "Free item"], ["points", "Bonus pts"]].map(([id, l]) => <button key={id} className={s.promo.discType === id ? "is-active" : ""} onClick={() => up({ discType: id })}>{l}</button>)}</div>
+                    {(s.promo.discType === "pct" || s.promo.discType === "amt" || s.promo.discType === "points") && (
+                      <SliderField min={s.promo.discType === "pct" ? 5 : s.promo.discType === "points" ? 100 : 1} max={s.promo.discType === "pct" ? 50 : s.promo.discType === "points" ? 2000 : 25} step={s.promo.discType === "pct" ? 5 : s.promo.discType === "points" ? 100 : 1} value={s.promo.discVal} onChange={(v) => up({ discVal: v })}
+                        prefix={s.promo.discType === "amt" ? "$" : null} suffix={s.promo.discType === "pct" ? "%" : s.promo.discType === "points" ? " pts" : null} width={s.promo.discType === "points" ? 72 : 56} />
+                    )}
+                  </FieldCard>
+                  <FieldCard icon="cart" color="#c2660a" bg="#fcefdf" label="Applies to">
+                    <div className="ns-seg" style={{ flexWrap: "wrap", height: "auto" }}>{[["beer", "Draft beer"], ["food", "Food"], ["all", "All F&B"], ["merch", "Merch"]].map(([id, l]) => <button key={id} className={s.promo.applyTo === id ? "is-active" : ""} onClick={() => up({ applyTo: id })}>{l}</button>)}</div>
+                  </FieldCard>
 
-                  <div className="ns-divider" style={{ margin: "16px 0" }} />
                   <RBToggle on={s.promo.inherit} onClick={() => up({ inherit: !s.promo.inherit })} label="Inherit campaign audience & validity" sub="Use the same audience and schedule as this campaign, rather than defining new ones" />
                   {s.promo.inherit ? (
-                    <div className="ns-callout ns-callout--info" style={{ marginTop: 12 }}><Icon name="link" size={15} /><span>This promotion applies to the same <strong>{window.NS.fmtNum(est.count)} fans</strong> and runs on the same schedule as the campaign above.</span></div>
+                    <div className="ns-callout ns-callout--info" style={{ marginTop: 12, marginBottom: 12 }}><Icon name="link" size={15} /><span>This promotion applies to the same <strong>{window.NS.fmtNum(est.count)} fans</strong> and runs on the same schedule as the campaign above.</span></div>
                   ) : (
-                    <div style={{ marginTop: 14 }}>
-                      <div className="ns-sectlabel">Promotion validity window</div>
-                      <div className="ns-seg" style={{ marginBottom: 16, flexWrap: "wrap", height: "auto" }}>{[["tonight", "Tonight · Game 15"], ["homestand", "This homestand"], ["trigger", "On trigger"], ["custom", "Custom dates"]].map(([id, l]) => <button key={id} className={s.promo.validity === id ? "is-active" : ""} onClick={() => up({ validity: id })}>{l}</button>)}</div>
+                    <div style={{ marginTop: 12, marginBottom: 12 }}>
+                      <FieldCard icon="calendar" color="#0e7490" bg="#e2f4f8" label="Promotion validity window">
+                        <div className="ns-seg" style={{ flexWrap: "wrap", height: "auto" }}>{[["tonight", "Tonight · Game 15"], ["homestand", "This homestand"], ["trigger", "On trigger"], ["custom", "Custom dates"]].map(([id, l]) => <button key={id} className={s.promo.validity === id ? "is-active" : ""} onClick={() => up({ validity: id })}>{l}</button>)}</div>
+                      </FieldCard>
                       <div className="ns-sectlabel">Narrow the audience further</div>
                       <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: 0 }}>
                         <div style={{ paddingRight: 22 }}><AudienceBuilder audience={s.promo.audienceOverride} setAudience={(a) => up({ audienceOverride: a })} /></div>
@@ -269,16 +269,15 @@ function CampaignBuilder({ onClose, seedAudience }) {
                     </div>
                   )}
 
-                  <div className="ns-divider" style={{ margin: "18px 0" }} />
-                  <div className="ns-sectlabel">Redemption limits</div>
-                  <div className="ns-seg" style={{ marginBottom: 16, flexWrap: "wrap", height: "auto" }}>{[["game", "1 / fan / game"], ["season", "Max 3 / season"], ["total", "1 / fan total"], ["none", "No cap"]].map(([id, l]) => <button key={id} className={s.promo.freqCap === id ? "is-active" : ""} onClick={() => up({ freqCap: id })}>{l}</button>)}</div>
+                  <FieldCard icon="shield" color="#b91c1c" bg="#fbe9e8" label="Redemption limits">
+                    <div className="ns-seg" style={{ flexWrap: "wrap", height: "auto" }}>{[["game", "1 / fan / game"], ["season", "Max 3 / season"], ["total", "1 / fan total"], ["none", "No cap"]].map(([id, l]) => <button key={id} className={s.promo.freqCap === id ? "is-active" : ""} onClick={() => up({ freqCap: id })}>{l}</button>)}</div>
+                  </FieldCard>
                   <RBToggle on={s.promo.budgetOn} onClick={() => up({ budgetOn: !s.promo.budgetOn })} label="Budget cap" sub="Pause the promotion automatically when this discount value is reached" />
                   {s.promo.budgetOn && <div style={{ marginTop: 8, marginBottom: 12 }}><div className="ns-cond"><div className="ns-cond__body"><div className="ns-cond__label">Budget ceiling</div><SliderField min={500} max={10000} step={100} value={s.promo.budgetVal} onChange={(v) => up({ budgetVal: v })} prefix="$" width={72} /></div></div></div>}
 
-                  <div className="ns-divider" style={{ margin: "18px 0" }} />
-                  <div className="ns-sectlabel">If this overlaps another active promotion</div>
-                  <div className="ns-seg" style={{ marginBottom: 6 }}>{[["stackable", "Stackable"], ["first", "First wins"], ["best", "Best value"]].map(([id, l]) => <button key={id} className={s.promo.conflict === id ? "is-active" : ""} onClick={() => up({ conflict: id })}>{l}</button>)}</div>
-                  <div className="ns-muted" style={{ fontSize: 10.5 }}>Resolved automatically at the terminal — see Promotions → Simulator to test this against other live promotions.</div>
+                  <FieldCard icon="bolt" color="#7c3aed" bg="#f0eafd" label="If this overlaps another active promotion" sub="Resolved automatically at the terminal — see Promotions → Simulator to test this against other live promotions.">
+                    <div className="ns-seg">{[["stackable", "Stackable"], ["first", "First wins"], ["best", "Best value"]].map(([id, l]) => <button key={id} className={s.promo.conflict === id ? "is-active" : ""} onClick={() => up({ conflict: id })}>{l}</button>)}</div>
+                  </FieldCard>
                 </>
               )}
             </RBSection>
@@ -295,11 +294,12 @@ function CampaignBuilder({ onClose, seedAudience }) {
                   </button>
                 ))}
               </div>
-              <div className="ns-sectlabel">Frequency cap</div>
-              <div className="ns-seg" style={{ marginBottom: 4 }}>
-                {[["1day", "1 / fan / day"], ["1game", "1 / fan / game"], ["none", "No cap"]].map(([id, l]) => <button key={id} className={s.cap === id ? "is-active" : ""} onClick={() => u({ cap: id })}>{l}</button>)}
-              </div>
-              <div className="ns-callout ns-callout--info" style={{ marginTop: 14 }}><Icon name="clock" size={15} /><span>Sends respect carrier quiet hours and opt-out status. Delivery failures are logged and not retried without your action.</span></div>
+              <FieldCard icon="shield" color="#b91c1c" bg="#fbe9e8" label="Frequency cap">
+                <div className="ns-seg">
+                  {[["1day", "1 / fan / day"], ["1game", "1 / fan / game"], ["none", "No cap"]].map(([id, l]) => <button key={id} className={s.cap === id ? "is-active" : ""} onClick={() => u({ cap: id })}>{l}</button>)}
+                </div>
+              </FieldCard>
+              <div className="ns-callout ns-callout--info" style={{ marginTop: 4 }}><Icon name="clock" size={15} /><span>Sends respect carrier quiet hours and opt-out status. Delivery failures are logged and not retried without your action.</span></div>
             </RBSection>
 
           </div>
