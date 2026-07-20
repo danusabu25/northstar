@@ -608,6 +608,15 @@
 .ns-lpcard__check { width: 20px; height: 20px; border-radius: 50%; background: var(--rc-green-500); color: #fff; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; margin-left: auto; }
 .ns-tplcard { border: 1px solid var(--color-border-default); border-radius: var(--radius-md); padding: 14px; background: var(--rc-white); }
 
+/* Loyalty program wizard — Configure step section cards (icon-badge style) */
+.ns-lpq { border: 1px solid var(--color-border-default); border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; background: var(--rc-white); box-shadow: 0 1px 2px rgba(16,24,40,0.04); }
+.ns-lpq__head { display: flex; align-items: flex-start; gap: 11px; margin-bottom: 12px; }
+.ns-lpq__ico { width: 30px; height: 30px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ns-lpq__meta { min-width: 0; }
+.ns-lpq__label { font: 600 12.5px/1.3 var(--font-family-primary); color: var(--rc-gray-900); }
+.ns-lpq__sub { font: 400 11px/1.4 var(--font-family-primary); color: var(--color-text-secondary); margin-top: 2px; }
+.ns-lpq__body { padding-left: 41px; }
+
 /* ============================================================
    Cost grid / promotion analytics metrics
    ============================================================ */

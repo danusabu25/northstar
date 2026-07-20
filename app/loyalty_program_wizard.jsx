@@ -169,26 +169,38 @@ const LP_QUESTIONS = {
   budgetAmt: { label:"Budget ceiling", kind:"slider", min:5000, max:100000, step:1000, prefix:"$", width:80 },
 };
 
+// Per-question icon + color identity — gives each config section a
+// distinct visual anchor instead of a flat list of identical rows.
+const LP_Q_META = {
+  who:         { icon: "users",   color: "#2563eb", bg: "#eaf1fd" },
+  earnRate:    { icon: "dollar",  color: "#15803d", bg: "#e7f6ec" },
+  mult:        { icon: "bolt",    color: "#7c3aed", bg: "#f0eafd" },
+  streakAt:    { icon: "trendUp", color: "#c2660a", bg: "#fcefdf" },
+  streakBonus: { icon: "gift",    color: "#be185d", bg: "#fceaf1" },
+  expiry:      { icon: "calendar",color: "#0e7490", bg: "#e2f4f8" },
+  budget:      { icon: "shield",  color: "#b91c1c", bg: "#fbe9e8" },
+};
+
 function LPQuestion({ qid, val, onChange }) {
   const q = LP_QUESTIONS[qid];
   if (!q) return null;
-  if (q.kind === "slider") return (
-    <div className="ns-cond" style={{ marginBottom: 8 }}><div className="ns-cond__body"><div className="ns-cond__label">{q.label}</div>
-      <SliderField min={q.min} max={q.max} step={q.step} value={val} onChange={onChange} prefix={q.prefix} suffix={q.suffix} width={q.width} /></div></div>
-  );
-  if (q.kind === "seg") return (
-    <div style={{ marginBottom: 12 }}>
-      <div className="ns-sectlabel" style={{ marginBottom: 8 }}>{q.label}</div>
-      <div className="ns-seg" style={{ flexWrap:"wrap", height:"auto" }}>{q.options.map(([id,l])=><button key={id} className={val===id?"is-active":""} onClick={()=>onChange(id)}>{l}</button>)}</div>
+  const meta = LP_Q_META[qid] || { icon: "sliders", color: "var(--ns-accent)", bg: "var(--rc-blue-100)" };
+  return (
+    <div className="ns-lpq">
+      <div className="ns-lpq__head">
+        <span className="ns-lpq__ico" style={{ background: meta.bg, color: meta.color }}><Icon name={meta.icon} size={15} /></span>
+        <div className="ns-lpq__meta">
+          <div className="ns-lpq__label">{q.label}</div>
+          {q.sub && <div className="ns-lpq__sub">{q.sub}</div>}
+        </div>
+      </div>
+      <div className="ns-lpq__body">
+        {q.kind === "slider" && <SliderField min={q.min} max={q.max} step={q.step} value={val} onChange={onChange} prefix={q.prefix} suffix={q.suffix} width={q.width} />}
+        {q.kind === "seg" && <div className="ns-seg" style={{ flexWrap:"wrap", height:"auto" }}>{q.options.map(([id,l])=><button key={id} className={val===id?"is-active":""} onClick={()=>onChange(id)}>{l}</button>)}</div>}
+        {q.kind === "toggle" && <div className="ns-seg">{[["Yes",true],["No",false]].map(([l,v])=><button key={l} className={val===v?"is-active":""} onClick={()=>onChange(v)}>{l}</button>)}</div>}
+      </div>
     </div>
   );
-  if (q.kind === "toggle") return (
-    <button className={"ns-memchip"+(val?" is-on":"")} style={{ width:"100%", marginBottom: val?0:8 }} onClick={()=>onChange(!val)}>
-      <span className="ns-memchip__check">{val&&<Icon name="check" size={11} stroke={3}/>}</span>
-      <span className="ns-memchip__meta"><span className="ns-memchip__label">{q.label}</span><span className="ns-memchip__sub" style={{ whiteSpace:"normal",lineHeight:1.35 }}>{q.sub}</span></span>
-    </button>
-  );
-  return null;
 }
 
 // Build plain-English narrative paragraphs (PRD Step 5 spec).
@@ -501,12 +513,12 @@ function LoyaltyProgramWizard({ onClose, presetTemplate }) {
         <div className="ns-sectlabel">How do you want to get started?</div>
         <div style={{ display:"flex", flexDirection:"column", gap:10 }}>
           {[
-            ["quick","Quick start","Pick a pre-built template, set the values, launch. No rule logic to configure. Recommended for new operators.","zap"],
-            ["customize","Customize a template","Start from a template and modify the earn rates, tiers, or expiry. For operators with specific requirements close to a standard template.","edit"],
-            ["scratch","Build from scratch","Full rule builder — define every component manually. Phase 2 capability for advanced operators.","sliders"],
-          ].map(([id,label,sub,icon])=>(
+            ["quick","Quick start","Pick a pre-built template, set the values, launch. No rule logic to configure. Recommended for new operators.","zap","#2563eb","#eaf1fd"],
+            ["customize","Customize a template","Start from a template and modify the earn rates, tiers, or expiry. For operators with specific requirements close to a standard template.","edit","#7c3aed","#f0eafd"],
+            ["scratch","Build from scratch","Full rule builder — define every component manually. Phase 2 capability for advanced operators.","sliders","#0e7490","#e2f4f8"],
+          ].map(([id,label,sub,icon,color,bg])=>(
             <button key={id} className={"ns-memchip"+(path===id?" is-on":"")} style={{ alignItems:"flex-start" }} onClick={()=>{setPath(id);if(id==="scratch"){onClose();window.nsNewLoyaltyRule&&window.nsNewLoyaltyRule();}}}>
-              <span style={{ width:32,height:32,borderRadius:8,flexShrink:0,background:path===id?"var(--ns-accent)":"var(--rc-gray-100)",color:path===id?"#fff":"var(--color-text-secondary)",display:"inline-flex",alignItems:"center",justifyContent:"center" }}><Icon name={icon} size={16}/></span>
+              <span style={{ width:32,height:32,borderRadius:8,flexShrink:0,background:bg,color:color,display:"inline-flex",alignItems:"center",justifyContent:"center" }}><Icon name={icon} size={16}/></span>
               <span className="ns-memchip__meta"><span className="ns-memchip__label" style={{ fontSize:13 }}>{label}</span><span className="ns-memchip__sub" style={{ whiteSpace:"normal",lineHeight:1.4,marginTop:3 }}>{sub}</span></span>
             </button>
           ))}
