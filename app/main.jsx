@@ -71,6 +71,7 @@ function NSApp() {
       gameday: window.GameDayScreen, sth: window.STHScreen, sentiment: window.SentimentScreen,
       loyalty: window.LoyaltyScreen, promotions: window.PromotionsScreen, campaigns: window.CampaignsScreen,
       sponsorship: window.SponsorshipScreen, entitlements: window.EntitlementsScreen,
+      seasons: window.SeasonsSetupScreen,
     };
     const Comp = map[active];
     return Comp ? <Comp /> : <Placeholder title="Screen" />;

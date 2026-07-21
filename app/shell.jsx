@@ -22,6 +22,7 @@ const NS_NAV = [
   {
     label: "Setup",
     items: [
+      { id: "seasons", label: "Seasons & teams", icon: "calendar" },
       { id: "entitlements", label: "Entitlements", icon: "database" },
     ],
   },
