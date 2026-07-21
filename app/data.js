@@ -474,7 +474,7 @@
   const HOUSEHOLDS = {
     "TM-00482917": {
       id: "HH-2041", name: "The Delgado Family", account: "STA-114-8841",
-      poolingMode: "pooled", // pooled | split | individual
+      poolingMode: "pooled", // pooled | individual
       pooledPoints: 12410, redeemedSeason: 3000,
       combinedLtv: 8940, combinedSeasonSpend: 2114, renewalValue: 2400,
       seasonGames: 14, risk: "partial",
@@ -498,7 +498,7 @@
     },
     "TM-00640122": {
       id: "HH-2103", name: "The Okafor Family", account: "STA-116-6014",
-      poolingMode: "split", pooledPoints: 8580, redeemedSeason: 1500,
+      poolingMode: "pooled", pooledPoints: 8580, redeemedSeason: 1500,
       combinedLtv: 6720, combinedSeasonSpend: 1510, renewalValue: 1800,
       seasonGames: 13, risk: "none",
       members: [
@@ -611,7 +611,74 @@
     return { ...g, stands, tiers };
   }
 
-  window.NS = { FANS, GAMEDAY, STH, LOYALTY, PROMOS, PROMO_TYPES, PROMO_BENCH, PROMO_COMPARE, CAMPAIGNS, TRIGGERED, SEQUENCES, AUDIENCE_TEMPLATES, SAVED_AUDIENCES, FREQ_CAPS, SUPPRESSION_RULES, CAMPAIGNS_LEGACY: CAMPAIGNS, SPONSOR, SPONSORS, HOUSEHOLDS, ENTITLE, SEASON, GAMES, SEASON_SUMMARY, getGameSnapshot, avatarColor, initials, fmtMoney, fmtNum, enrichFan };
+  // ---- Venues, teams & seasons (season/team-scoped STH setup) ----
+  const VENUES = [
+    { id: "uc", name: "United Center", city: "Chicago, IL" },
+  ];
+
+  const TEAMS = [
+    { id: "bulls", name: "Chicago Bulls", sport: "NBA", venue: "uc" },
+    { id: "blackhawks", name: "Chicago Blackhawks", sport: "NHL", venue: "uc" },
+  ];
+
+  const TEAM_SEASONS = {
+    bulls: [
+      {
+        id: "bulls-2026-27", label: "2026–27", status: "upcoming",
+        start: "Oct 2026", end: "Apr 2027", games: 0,
+        renewal: { opens: "Jun 1, 2027", closes: "Jul 31, 2027" },
+        tiers: [
+          { code: "PLAT-CL", name: "Platinum · Club level", benefit: "25% off all F&B + merch", members: 0 },
+          { code: "GOLD-FL", name: "Gold · Full season", benefit: "20% off all F&B", members: 0 },
+          { code: "GOLD-HF", name: "Gold · Half season", benefit: "15% off all F&B", members: 0 },
+          { code: "SLVR-FL", name: "Silver · Full season", benefit: "10% off concessions", members: 0 },
+        ],
+        matchKey: "account", lastImport: null,
+      },
+      {
+        id: "bulls-2025-26", label: "2025–26", status: "current",
+        start: "Oct 21, 2025", end: "Apr 2026", games: 14,
+        renewal: { opens: "Jun 1, 2026", closes: "Jul 31, 2026" },
+        tiers: [
+          { code: "PLAT-CL", name: "Platinum · Club level", benefit: "25% off all F&B + merch", members: 312 },
+          { code: "GOLD-FL", name: "Gold · Full season", benefit: "20% off all F&B", members: 1486 },
+          { code: "GOLD-HF", name: "Gold · Half season", benefit: "15% off all F&B", members: 612 },
+          { code: "SLVR-FL", name: "Silver · Full season", benefit: "10% off concessions", members: 331 },
+        ],
+        matchKey: "account",
+        lastImport: { date: "Sep 28, 2025", renewed: 2201, upgraded: 89, downgraded: 41, new: 233, lapsed: 187 },
+      },
+      {
+        id: "bulls-2024-25", label: "2024–25", status: "past",
+        start: "Oct 22, 2024", end: "Apr 2025", games: 41,
+        renewal: { opens: "Jun 1, 2025", closes: "Jul 31, 2025" },
+        tiers: [
+          { code: "PLAT-CL", name: "Platinum · Club level", benefit: "25% off all F&B + merch", members: 298 },
+          { code: "GOLD-FL", name: "Gold · Full season", benefit: "20% off all F&B", members: 1402 },
+          { code: "GOLD-HF", name: "Gold · Half season", benefit: "15% off all F&B", members: 587 },
+          { code: "SLVR-FL", name: "Silver · Full season", benefit: "10% off concessions", members: 356 },
+        ],
+        matchKey: "account",
+        lastImport: { date: "Sep 30, 2024", renewed: 2088, upgraded: 62, downgraded: 35, new: 245, lapsed: 164 },
+      },
+    ],
+    blackhawks: [
+      {
+        id: "hawks-2025-26", label: "2025–26", status: "current",
+        start: "Oct 9, 2025", end: "Apr 2026", games: 41,
+        renewal: { opens: "Mar 1, 2026", closes: "May 31, 2026" },
+        tiers: [
+          { code: "BH-PLAT", name: "Platinum · Club level", benefit: "20% off all F&B", members: 184 },
+          { code: "BH-GOLD", name: "Gold · Full season", benefit: "15% off all F&B", members: 940 },
+          { code: "BH-SLVR", name: "Silver · Full season", benefit: "10% off concessions", members: 402 },
+        ],
+        matchKey: "email",
+        lastImport: { date: "Sep 15, 2025", renewed: 1210, upgraded: 34, downgraded: 22, new: 128, lapsed: 96 },
+      },
+    ],
+  };
+
+  window.NS = { FANS, GAMEDAY, STH, LOYALTY, PROMOS, PROMO_TYPES, PROMO_BENCH, PROMO_COMPARE, CAMPAIGNS, TRIGGERED, SEQUENCES, AUDIENCE_TEMPLATES, SAVED_AUDIENCES, FREQ_CAPS, SUPPRESSION_RULES, CAMPAIGNS_LEGACY: CAMPAIGNS, SPONSOR, SPONSORS, HOUSEHOLDS, ENTITLE, SEASON, GAMES, SEASON_SUMMARY, VENUES, TEAMS, TEAM_SEASONS, getGameSnapshot, avatarColor, initials, fmtMoney, fmtNum, enrichFan };
 
   function fmtMoney(n, dec) { return "$" + Number(n).toLocaleString(undefined, { minimumFractionDigits: dec ?? 0, maximumFractionDigits: dec ?? 0 }); }
   function fmtNum(n) { return Number(n).toLocaleString(); }

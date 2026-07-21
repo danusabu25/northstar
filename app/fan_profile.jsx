@@ -48,7 +48,7 @@ function FanProfile({ fan, onBack, index }) {
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" }}>
                 <span className="ns-fan-id">#{fan.id}</span>
-                {fan.sth ? <span className="ns-muted" style={{ fontSize: 12 }}><Icon name="star" size={12} style={{ verticalAlign: "-2px", marginRight: 4 }} />{fan.sth}{fan.seat ? " · " + fan.seat : ""}</span>
+                {fan.sth ? <span className="ns-muted" style={{ fontSize: 12 }}><Icon name="star" size={12} style={{ verticalAlign: "-2px", marginRight: 4 }} />{fan.sth}</span>
                   : <span className="ns-muted" style={{ fontSize: 12 }}>Non-STH · recognized fan</span>}
                 {fan.renewal && <span className="ns-muted" style={{ fontSize: 12 }}>Renewal {fan.renewal}</span>}
                 <span className="ns-muted" style={{ fontSize: 12 }}>Fan since {fan.joined}</span>
@@ -97,31 +97,6 @@ function OverviewTab({ fan, d, catSegs, benefitPct, onSeeTx }) {
   const catTotal = catSegs.reduce((s, c) => s + c.value, 0);
   return (
     <div>
-      {/* PAR identity */}
-      <div className="ns-card" style={{ marginBottom: 14, background: "var(--ns-navy)", borderColor: "var(--ns-navy)" }}>
-        <div style={{ padding: "16px 18px", display: "grid", gridTemplateColumns: "1.3fr 1fr 1fr 1fr", gap: 20, color: "#fff" }}>
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-              <Icon name="link" size={15} style={{ color: "var(--rc-blue-400)" }} />
-              <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(255,255,255,0.7)" }}>Identity thread</span>
-            </div>
-            <div className="ns-mono" style={{ fontSize: 13 }}>par_hash · 9f3a…c1b7</div>
-            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", marginTop: 4 }}>Stable across card reissue &amp; wallet</div>
-          </div>
-          {[
-            ["Confidence", window.fanTierLabel(fan.tier), fan.tier === "gold" ? "Verified · email linked" : fan.tier === "silver" ? "Seen 3+ times" : "Seen 1–2 times"],
-            ["Linked via", fan.sth ? "STH record" : fan.tier === "bronze" ? "Unlinked" : "Confirmed email", fan.sth ? "Ticketmaster CSV" : "First-visit prompt"],
-            ["Devices bridged", String(d.devices.length), d.devices.map((x) => x.type).join(" + ")],
-          ].map(([k, v, sub], i) => (
-            <div key={i} style={{ borderLeft: "1px solid rgba(255,255,255,0.15)", paddingLeft: 18 }}>
-              <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "rgba(255,255,255,0.7)", marginBottom: 8 }}>{k}</div>
-              <div style={{ fontSize: 16, fontWeight: 600 }}>{v}</div>
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.6)", marginTop: 4 }}>{sub}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Next best action */}
       <div className="ns-card" style={{ marginBottom: 14, padding: "14px 16px", display: "flex", alignItems: "center", gap: 14, borderLeft: "3px solid var(--ns-accent)" }}>
         <span style={{ width: 34, height: 34, borderRadius: 8, background: "var(--rc-blue-100)", color: "var(--rc-blue-600)", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Icon name="sparkle" size={17} /></span>
@@ -278,14 +253,6 @@ function EngagementTab({ fan, d, benefitPct }) {
           <div className="ns-card__head"><div className="ns-card__title">Sentiment history</div><SentTag trend={fan.sentTrend} /></div>
           <div className="ns-card__body" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
             <SentLine data={fan.sentiment} w={300} h={80} />
-            <div style={{ display: "flex", gap: 6, width: "100%", justifyContent: "space-between" }}>
-              {fan.sentiment.map((s, i) => (
-                <div key={i} style={{ textAlign: "center", flex: 1 }}>
-                  <div className="ns-mono" style={{ fontSize: 12, fontWeight: 600, color: s == null ? "var(--rc-gray-400)" : s >= 7 ? "var(--rc-green-600)" : s >= 5 ? "var(--rc-amber-600)" : "var(--rc-red-600)" }}>{s == null ? "—" : s.toFixed(1)}</div>
-                  <div className="ns-muted" style={{ fontSize: 9.5, marginTop: 2 }}>G{10 + i}</div>
-                </div>
-              ))}
-            </div>
             {fan.sentTrend === "down" && <div className="ns-callout ns-callout--info" style={{ width: "100%", padding: "10px 12px", background: "var(--rc-red-100)", color: "var(--rc-red-600)" }}><Icon name="alert" size={14} /><span>Two-game weighted decline. Recovery credit auto-issued at last visit.</span></div>}
           </div>
         </div>
@@ -321,21 +288,10 @@ function EngagementTab({ fan, d, benefitPct }) {
             ))}
             <div style={{ marginLeft: "auto", textAlign: "right" }}><div className="ns-mono ns-strong" style={{ fontSize: 18, color: "var(--rc-blue-600)" }}>{d.attendance.streak}</div><div className="ns-muted" style={{ fontSize: 10.5 }}>game streak</div></div>
           </div>
-          <div className="ns-spread" style={{ marginBottom: 14 }}>
+          <div className="ns-spread">
             <span className="ns-muted" style={{ fontSize: 11.5 }}>Favorite stand</span>
             <span style={{ fontSize: 12, color: "var(--rc-gray-900)", fontWeight: 500 }}>{d.favoriteStand}</span>
           </div>
-          <div className="ns-divider" style={{ marginBottom: 12 }} />
-          <div className="ns-eyebrow" style={{ marginBottom: 10 }}>Bridged payment identity</div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
-            {d.devices.map((dev, i) => (
-              <div key={i} className="ns-spread">
-                <span style={{ display: "flex", alignItems: "center", gap: 9, fontSize: 12, color: "var(--rc-gray-900)" }}><span style={{ width: 22, height: 22, borderRadius: 5, background: "var(--rc-gray-100)", color: "var(--color-text-secondary)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><Icon name="card" size={12} /></span>{dev.type}</span>
-                <span className="ns-muted ns-mono" style={{ fontSize: 11 }}>{dev.brand}{dev.primary ? " · primary" : ""}</span>
-              </div>
-            ))}
-          </div>
-          <div className="ns-muted" style={{ fontSize: 10.5, marginTop: 10 }}>All linked to one PAR identity — one fan, every device.</div>
         </div>
       </div>
     </div>
